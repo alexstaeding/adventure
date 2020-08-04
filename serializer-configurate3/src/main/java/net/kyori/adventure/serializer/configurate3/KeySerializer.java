@@ -25,6 +25,7 @@ package net.kyori.adventure.serializer.configurate3;
 
 import com.google.common.reflect.TypeToken;
 import java.util.function.Predicate;
+import net.kyori.adventure.key.InvalidKeyException;
 import net.kyori.adventure.key.Key;
 import ninja.leaping.configurate.objectmapping.InvalidTypeException;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
@@ -44,7 +45,7 @@ import ninja.leaping.configurate.objectmapping.serialize.ScalarSerializer;
     }
     try {
       return Key.of(obj.toString());
-    } catch(final Key.ParseException ex) {
+    } catch(final InvalidKeyException ex) {
       throw new ObjectMappingException(ex);
     }
   }

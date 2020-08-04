@@ -206,11 +206,12 @@ import org.checkerframework.checker.nullness.qual.Nullable;
       }
     } else if(src instanceof ScoreComponent) {
       final ScoreComponent sc = (ScoreComponent) src;
-      value.getNode(SCORE_NAME).setValue(sc.name());
-      value.getNode(SCORE_OBJECTIVE).setValue(sc.objective());
+      final ConfigurationNode score = value.getNode(SCORE);
+      score.getNode(SCORE_NAME).setValue(sc.name());
+      score.getNode(SCORE_OBJECTIVE).setValue(sc.objective());
       // score component value is optional
       final /* @Nullable */ String scoreValue = sc.value();
-      if(scoreValue != null) value.getNode(SCORE_VALUE).setValue(scoreValue);
+      if(scoreValue != null) score.getNode(SCORE_VALUE).setValue(scoreValue);
     } else if(src instanceof SelectorComponent) {
       value.getNode(SELECTOR).setValue(((SelectorComponent) src).pattern());
     } else if(src instanceof KeybindComponent) {

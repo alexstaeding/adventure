@@ -25,6 +25,8 @@ package net.kyori.adventure.serializer.configurate3;
 
 import com.google.common.reflect.TypeToken;
 import java.time.Duration;
+import java.util.Objects;
+
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.title.Title;
@@ -37,8 +39,11 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 /* package */ final class TitleSerializer implements TypeSerializer<Title> {
   static final TypeToken<Title> TYPE = TypeToken.of(Title.class);
   static final TitleSerializer INSTANCE = new TitleSerializer();
+
+  static final Duration KEEP = Duration.ofSeconds(-1);
   static final String TITLE = "title";
   static final String SUBTITLE = "subtitle";
+  static final String TIMES = "times";
   static final String FADE_IN = "fade-in";
   static final String STAY = "stay";
   static final String FADE_OUT = "fade-out";
@@ -50,10 +55,16 @@ import org.checkerframework.checker.nullness.qual.Nullable;
     }
     final Component title = value.getNode(TITLE).getValue(ComponentTypeSerializer.TYPE, TextComponent.empty());
     final Component subtitle = value.getNode(SUBTITLE).getValue(ComponentTypeSerializer.TYPE, TextComponent.empty());
-    final Duration fadeIn = value.getNode(FADE_IN).getValue(DurationSerializer.INSTANCE.type(), Title.KEEP);
-    final Duration stay = value.getNode(STAY).getValue(DurationSerializer.INSTANCE.type(), Title.KEEP);
-    final Duration fadeOut = value.getNode(FADE_OUT).getValue(DurationSerializer.INSTANCE.type(), Title.KEEP);
-    return Title.of(title, subtitle, fadeIn, stay, fadeOut);
+
+    final Duration fadeIn = value.getNode(TIMES, FADE_IN).getValue(DurationSerializer.INSTANCE.type(), KEEP);
+    final Duration stay = value.getNode(TIMES, STAY).getValue(DurationSerializer.INSTANCE.type(), KEEP);
+    final Duration fadeOut = value.getNode(TIMES, FADE_OUT).getValue(DurationSerializer.INSTANCE.type(), KEEP);
+
+    if(!Objects.equals(fadeIn, KEEP) || !Objects.equals(stay, KEEP) || !Objects.equals(fadeOut, KEEP)) {
+      return Title.of(title, subtitle, Title.Times.of(fadeIn, stay, fadeOut));
+    } else {
+      return Title.of(title, subtitle);
+    }
   }
 
   @Override
@@ -65,8 +76,9 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
     value.getNode(TITLE).setValue(ComponentTypeSerializer.TYPE, obj.title());
     value.getNode(SUBTITLE).setValue(ComponentTypeSerializer.TYPE, obj.subtitle());
-    value.getNode(FADE_IN).setValue(DurationSerializer.INSTANCE.type(), obj.fadeInTime());
-    value.getNode(STAY).setValue(DurationSerializer.INSTANCE.type(), obj.stayTime());
-    value.getNode(FADE_OUT).setValue(DurationSerializer.INSTANCE.type(), obj.fadeOutTime());
+    final Title./* @Nullable */ Times times = obj.times();
+    value.getNode(TIMES, FADE_IN).setValue(DurationSerializer.INSTANCE.type(), times == null ? null : times.fadeIn());
+    value.getNode(TIMES, STAY).setValue(DurationSerializer.INSTANCE.type(), times == null ? null : times.stay());
+    value.getNode(TIMES, FADE_OUT).setValue(DurationSerializer.INSTANCE.type(), times == null ? null : times.fadeOut());
   }
 }

@@ -23,21 +23,18 @@
  */
 package net.kyori.adventure.serializer.configurate3;
 
-import com.google.common.collect.ImmutableSet;
 import com.google.common.reflect.TypeToken;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
-import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import ninja.leaping.configurate.ConfigurationNode;
-import ninja.leaping.configurate.ConfigurationOptions;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class ScalarSerializersTest {
+public class ScalarSerializersTest implements ConfigurateTestBase {
 
   @Test
   void testSerializeNamedTextColor() throws ObjectMappingException {
@@ -81,15 +78,4 @@ public class ScalarSerializersTest {
     assertEquals(Key.of("adventure", "meow"), this.node("adventure:meow").getValue(keyType));
   }
 
-  private static final ConfigurationOptions OPTIONS = ConfigurationOptions.defaults()
-    .withSerializers(s -> ConfigurateComponentSerializer.builder().scalarSerializer(GsonComponentSerializer.gson()).outputStringComponents(true).build().populate(s))
-    .withNativeTypes(ImmutableSet.of(String.class, Integer.class, Boolean.class, Double.class));
-
-  private ConfigurationNode node() {
-    return ConfigurationNode.root(OPTIONS);
-  }
-
-  private ConfigurationNode node(final Object value) {
-    return ConfigurationNode.root(OPTIONS).setValue(value);
-  }
 }

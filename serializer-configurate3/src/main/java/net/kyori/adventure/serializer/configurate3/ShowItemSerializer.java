@@ -37,9 +37,9 @@ import org.checkerframework.checker.nullness.qual.Nullable;
   static final ShowItemSerializer INSTANCE = new ShowItemSerializer();
   static final TypeToken<HoverEvent.ShowItem> TYPE = TypeToken.of(HoverEvent.ShowItem.class);
 
-  /* package */ static final String ID = "id";
-  /* package */ static final String COUNT = "count";
-  /* package */ static final String TAG = "tag";
+  static final String ID = "id";
+  static final String COUNT = "count";
+  static final String TAG = "tag";
 
   private ShowItemSerializer() {
   }

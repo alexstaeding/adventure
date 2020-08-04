@@ -23,5 +23,59 @@
  */
 package net.kyori.adventure.serializer.configurate3;
 
-public class SoundSerializersTest {
+import net.kyori.adventure.key.Key;
+import net.kyori.adventure.sound.Sound;
+import ninja.leaping.configurate.ConfigurationNode;
+import ninja.leaping.configurate.objectmapping.ObjectMappingException;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+public class SoundSerializersTest implements ConfigurateTestBase {
+
+  @Test
+  void testSound() throws ObjectMappingException {
+    final ConfigurationNode sound = node(n -> {
+      n.getNode(SoundSerializer.NAME).setValue("minecraft:music_disc.cat");
+      n.getNode(SoundSerializer.SOURCE).setValue("ambient");
+      n.getNode(SoundSerializer.VOLUME).setValue(0.8f);
+      n.getNode(SoundSerializer.PITCH).setValue(2.0f);
+    });
+    final Sound deserialized = Sound.of(Key.of("music_disc.cat"), Sound.Source.AMBIENT, 0.8f, 2.0f);
+    assertEquals(sound, node().setValue(SoundSerializer.TYPE, deserialized));
+    assertEquals(deserialized, sound.getValue(SoundSerializer.TYPE));
+  }
+
+  @Test
+  void testSoundNoVolume() throws ObjectMappingException {
+    final ConfigurationNode sound = node(n -> {
+      n.getNode(SoundSerializer.NAME).setValue("minecraft:music_disc.cat");
+      n.getNode(SoundSerializer.SOURCE).setValue("ambient");
+      n.getNode(SoundSerializer.PITCH).setValue(2.0f);
+    });
+    final Sound deserialized = Sound.of(Key.of("music_disc.cat"), Sound.Source.AMBIENT, 1.0f, 2.0f);
+    assertEquals(deserialized, sound.getValue(SoundSerializer.TYPE));
+  }
+
+  @Test
+  void testSoundNoPitch() throws ObjectMappingException {
+    final ConfigurationNode sound = node(n -> {
+      n.getNode(SoundSerializer.NAME).setValue("minecraft:music_disc.cat");
+      n.getNode(SoundSerializer.SOURCE).setValue("ambient");
+      n.getNode(SoundSerializer.VOLUME).setValue(0.8f);
+    });
+    final Sound deserialized = Sound.of(Key.of("music_disc.cat"), Sound.Source.AMBIENT, 0.8f, 1.0f);
+    assertEquals(deserialized, sound.getValue(SoundSerializer.TYPE));
+  }
+
+  @Test
+  void testNoNameThrows() {
+    assertThrows(ObjectMappingException.class, () -> node(n -> n.getNode(SoundSerializer.SOURCE).setValue("music")).getValue(SoundSerializer.TYPE));
+  }
+
+  @Test
+  void testNoSourceThrows() {
+    assertThrows(ObjectMappingException.class, () -> node(n -> n.getNode(SoundSerializer.NAME).setValue("music_disc.13")).getValue(SoundSerializer.TYPE));
+  }
 }

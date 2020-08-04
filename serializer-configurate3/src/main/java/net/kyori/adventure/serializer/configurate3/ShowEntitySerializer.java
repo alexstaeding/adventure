@@ -39,9 +39,9 @@ import org.checkerframework.checker.nullness.qual.Nullable;
   static final TypeToken<HoverEvent.ShowEntity> TYPE = TypeToken.of(HoverEvent.ShowEntity.class);
   private static final TypeToken<UUID> UUID_TYPE = TypeToken.of(UUID.class);
   
-  private static final String ENTITY_TYPE = "type";
-  private static final String ID = "id";
-  private static final String NAME = "name";
+  static final String ENTITY_TYPE = "type";
+  static final String ID = "id";
+  static final String NAME = "name";
   
   private ShowEntitySerializer() {
   }

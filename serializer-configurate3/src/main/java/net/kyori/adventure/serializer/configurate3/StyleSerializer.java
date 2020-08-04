@@ -44,16 +44,16 @@ import org.checkerframework.checker.nullness.qual.Nullable;
   private static final TextDecoration[] DECORATIONS = TextDecoration.values();
   private static final TypeToken<TextDecoration.State> DECORATION_STATE = TypeToken.of(TextDecoration.State.class);
 
-  private static final String FONT = "font";
-  private static final String COLOR = "color";
-  private static final String INSERTION = "insertion";
-  private static final String CLICK_EVENT = "clickEvent";
-  private static final String CLICK_EVENT_ACTION = "action";
-  private static final TypeToken<ClickEvent.Action> CLICK_EVENT_ACTION_TYPE = TypeToken.of(ClickEvent.Action.class);
-  private static final String CLICK_EVENT_VALUE = "value";
-  private static final String HOVER_EVENT = "hoverEvent";
-  private static final String HOVER_EVENT_ACTION = "action";
-  private static final TypeToken<HoverEvent.Action<?>> HOVER_EVENT_ACTION_TYPE = new TypeToken<HoverEvent.Action<?>>() {};
+  static final String FONT = "font";
+  static final String COLOR = "color";
+  static final String INSERTION = "insertion";
+  static final String CLICK_EVENT = "clickEvent";
+  static final String CLICK_EVENT_ACTION = "action";
+  static final TypeToken<ClickEvent.Action> CLICK_EVENT_ACTION_TYPE = TypeToken.of(ClickEvent.Action.class);
+  static final String CLICK_EVENT_VALUE = "value";
+  static final String HOVER_EVENT = "hoverEvent";
+  static final String HOVER_EVENT_ACTION = "action";
+  static final TypeToken<HoverEvent.Action<?>> HOVER_EVENT_ACTION_TYPE = new TypeToken<HoverEvent.Action<?>>() {};
   static final String HOVER_EVENT_CONTENTS = "contents";
   static final @Deprecated String HOVER_EVENT_VALUE = "value";
 

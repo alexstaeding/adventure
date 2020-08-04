@@ -32,7 +32,6 @@ import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.serializer.ComponentSerializer;
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.ConfigurationOptions;
-import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 import ninja.leaping.configurate.objectmapping.serialize.TypeSerializerCollection;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -73,7 +72,7 @@ import static java.util.Objects.requireNonNull;
 
   @Override
   public @NonNull ConfigurationNode serialize(final @NonNull Component component) {
-    final ConfigurationNode base = CommentedConfigurationNode.root(this.ownNodeOptions);
+    final ConfigurationNode base = ConfigurationNode.root(this.ownNodeOptions);
     try {
       base.setValue(ComponentTypeSerializer.TYPE, component);
     } catch(final ObjectMappingException e) {
